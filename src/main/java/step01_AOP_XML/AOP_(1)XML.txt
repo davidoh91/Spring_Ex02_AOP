@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- xml method(1) for weaving in weaving proxy server (applying advice in target method appropriately) -->
+    <!-- AOP proxy server weaves two completely separated classes, the target and the advice -->
+    <!-- 객체생성 -->
+    <bean class="step01_AOP_XML.MessageServiceImpl" id="target"/>
+    <bean class="step01_AOP_XML.TimerAdvice" id="advice"/>
+    <bean class="step01_AOP_XML.UserService" id="service"/>
+
+    <!-- xml 기반 aop설정을 통해 target 대상의 메소드가 호출될 때 advice 가 적용되도록 세팅한다 -->
+    <!--
+       AOP Proxy Server 는 J2SE 방식으로 서버를 생성한다 :
+        - "interface의 구현객체를 joinPoint 대상으로 설정할 때
+           반드시 interface를 통해 타겟대상을 호출해야한다는 규칙"
+
+       하지만, J2SE 방식을 CGLIB 방식으로 변경을 하면 interface 기반 또는
+       구현객체를 통해 호출을 해도 에러가 나지 않는다.
+
+       proxy-target-class="true" -> allows calling
+       expose-proxy="true" -> AOP proxy server can now insert advice for a method inside a target method
+    -->
+    <aop:config proxy-target-class="true" expose-proxy="true">
+        <aop:aspect id="aspect" ref="advice">
+            <!-- method : declares the advice method , pointcut : regex to identify all join points where advice will be called (whether the target class or target's specific methods)
+                          refer to notes for regex in pointcut-->
+            <!-- pointcut is a collection of joinpoints filtered by regex
+                 adjust regex to allow UserService class to be the target as well
+
+                 *regex is upper/lowercase sensitive
+             -->
+            <aop:around method="around" pointcut="execution(public * step01_AOP_XML.*Service.*ello(..))"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

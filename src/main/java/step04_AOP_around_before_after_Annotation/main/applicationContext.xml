@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- construct Class instances -->
+    <!--
+    <bean class="step03_AOP_around_before_after_Annotation.service.MemberServiceImpl" id="target"/>
+    <bean class="step03_AOP_around_before_after_Annotation.advice.AroundAdvice" id="aroundAdvice"/>
+    <bean class="step03_AOP_around_before_after_Annotation.advice.SampleAdvice" id="sampleAdvice"/>
+    -->
+
+    <!-- use Annotation to construct instances-->
+    <context:component-scan base-package="step04_AOP_around_before_after_Annotation"/>
+
+
+
+<!--    &lt;!&ndash; AOP config : xml version &ndash;&gt;-->
+<!--    <aop:config>-->
+<!--        &lt;!&ndash; pointcut (the regex for multiple joinpoints) &ndash;&gt;-->
+<!--        <aop:pointcut expression="execution(public * step03_AOP_around_before_after_XML.service.*Impl.*(..))" id="pointCut"/>-->
+
+<!--        <aop:aspect id="advice1" ref="aroundAdvice" order="1">-->
+<!--            <aop:around method="around" pointcut-ref="pointCut"/>-->
+<!--        </aop:aspect>-->
+<!--        <aop:aspect id="advice2" ref="sampleAdvice">-->
+
+<!--            &lt;!&ndash; here, set the before, after, after~ AOP methods &ndash;&gt;-->
+<!--            <aop:before method="before" pointcut-ref="pointCut"/>-->
+<!--            <aop:after method="afterFinally" pointcut-ref="pointCut"/>-->
+<!--            &lt;!&ndash; must bind the Object obj (which contains joinPoint's method results ) to AOP &ndash;&gt;-->
+<!--            <aop:after-returning method="afterReturning" pointcut-ref="pointCut" returning="obj"/>-->
+<!--            <aop:after-throwing method="afterThrowing" pointcut-ref="pointCut" throwing="e"/>-->
+
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+
+    <!-- AOP annotation config -->
+    <aop:aspectj-autoproxy />
+
+
+</beans>

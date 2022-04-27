@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- construct class beans (target jointpoint classes, aspect advice class) -->
+    <bean class="step06_AOP_HW_XML.audio.AudioImpl" id="audioImpl"/>
+    <bean class="step06_AOP_HW_XML.tv.TvImpl" id="tvImpl"/>
+    <bean class="step06_AOP_HW_XML.video.VideoImpl" id="videoImpl"/>
+    <bean class="step06_AOP_HW_XML.advice.LogAdvice" id="logAdvice"/>
+
+    <!-- AOP config : xml version -->
+    <aop:config>
+        <!-- declare pointcut (the regex for multiple joinpoints) -->
+        <aop:pointcut id="pointCut" expression="execution(public * step06_AOP_HW_XML.*.*Impl.*(..))"/>
+
+        <!-- define the AOP aspect class and method (also, its pointcut regex)-->
+        <aop:aspect id="advice" ref="logAdvice"> <!-- order="1" -->
+            <aop:around method="around" pointcut-ref="pointCut"/>
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>

@@ -1,0 +1,110 @@
+AOP Aspect Oriented Programming
+
+What does AOP achieve?
+	It "weaves" completely separated methods, such as main logic method & logging method, into one single flow.
+	It accomplishes such via the use of Spring applicationContext.xml OR Annotation (it needs one tag "<aop:aspectj-autoproxy />" to 	use annotations, however)
+
+
+
+Terms:
+	Advice - the method that weaves into the main logic method (ie. logging method)
+		5 Types of Advice -
+			around :
+				AOP : around method (before + after processing)
+				needs a special JoinPoint instance as a param (because it needs to return the target method's result back)
+			before :
+				runs before the main logic method
+			after :
+				After processes disregarding exceptions if there is any
+			after-returning :
+				runs (after the JoinPoint method is processed successfully)
+			after-throwing :
+				runs when an exception occurs as an exception occurs from the main logic method
+
+
+	Target - the class where the Advice will be weaved into
+
+	JoinPoint - (the target's) the main logic method, where the Advice will be weaved into
+
+	Pointcut - a collection of joint points via regex filter (ie. logging method would be required for all sales transactional method)
+
+
+
+Common Requirements:
+	in maven pom.xml file, add the following (including aspectj library)
+
+<dependencies>
+
+        <!-- added to enable @resource annotation -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <!-- added to use lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
+
+        <!--
+            added aspectj for AOP
+            this helps weave aspect during compilation
+            make sure to add <scope>compile</scope>
+        -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.9.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+  </dependencies>
+
+
+
+
+Common Feature:
+	AOP "around" method takes in ProceedingJoinPoint class,
+	whereas other AOP methods takes JoinPoint class.
+
+	The ProceedingJoinPoint class instance, "joinPoint", can call .proceed() which
+	returns Object instance that contains the result of the target's method (join point method).
+	The AOP around method then returns the Object instance to AOP proxy server which will weave the AOP around method around the target's join point method.
+
+	code ie.
+		     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        			System.out.println("AOP : around pre-processing...");
+
+       			 Object obj = joinPoint.proceed();
+
+        			System.out.println("AOP : around post-processing...");
+
+        			return obj;
+		     }
+
+
+XML version:
+	the required tags in Spring applicationContext.xml :
+		first, create the beans necessary, such as the ASPECT class (that contains aspect methods
+			ie.    <bean class="step03_AOP_around_before_after_XML.advice.AroundAdvice" id="aroundAdvice"/>
+
+
+		<aop:config>
+
+		    <aop:pointcut expression="regex filter" id="pointCut"/>
+			regex filter ie. expression="execution(public * step03_AOP_around_before_after_XML.service.*Impl.*(..))"
+		    <aop:aspect id="the advice id (ie. advice) ref="the aspect class bean id above (ie. aroundAdvice) order="1 or 2 or whatevs">
+			now, insert one of the 5 AOP methods (around, before, after, after-returning, after-throwing)
+			<aop:around method="the method from the ref above (ie. around)" pointcut-ref="the id of pointcut above (ie. pointCut)"/>
+		    </aop:aspect>
+
+		</aop:config>
+
+
+
+
+
+Annotation version:

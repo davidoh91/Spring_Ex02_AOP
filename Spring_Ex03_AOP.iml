@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring 애플리케이션 컨텍스트" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/step01_AOP/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/step02_AOP_Annotation/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/step03_AOP_around_before_after_/advice/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/step04_AOP_around_before_after_Annotation/main/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/step06_AOP_HW_XML/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/step07_AOP_HW_Annotation/applicationContext.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
+</module>

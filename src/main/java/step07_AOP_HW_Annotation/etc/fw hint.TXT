@@ -1,0 +1,4 @@
+FileWriter fw;
+	public AroundAdvice() {
+	fw = new FileWriter("src/main/~/log.txt")
+}
